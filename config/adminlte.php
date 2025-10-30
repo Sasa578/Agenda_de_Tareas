@@ -480,4 +480,45 @@ return [
     */
 
     'livewire' => false,
+
+        /*
+    |--------------------------------------------------------------------------
+    | AdminLTE theme
+    |--------------------------------------------------------------------------
+    |
+    | This option determines the default theme that will be used by AdminLTE.
+    | You can set it to 'light' or 'dark' to enable the corresponding theme.
+    |
+    */
+
+    'theme' => 'dark',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Layout
+    |--------------------------------------------------------------------------
+    |
+    | This option determines the default layout that will be used by AdminLTE.
+    | You can set it to 'layout-top-nav' or 'layout-fluid' to enable the
+    | corresponding layout.
+    |
+    */
+
+    'layout' => 'layout-fluid',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Classes
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to customize the CSS classes that are used by
+    | AdminLTE. You can set your own classes to customize the appearance.
+    |
+    */
+
+    'classes' => [
+        'sidebar' => 'sidebar-dark-primary elevation-4',
+        'navbar' => 'navbar-dark navbar-gray-dark',
+        'brand' => 'brand-link bg-gray-dark',
+    ],
 ];
