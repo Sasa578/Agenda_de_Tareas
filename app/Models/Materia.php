@@ -17,6 +17,9 @@ class Materia extends Model
         'user_id'
     ];
 
+    /**
+     * Relaciones
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,5 +33,13 @@ class Materia extends Model
     public function tareasPendientes()
     {
         return $this->hasMany(Tarea::class)->where('estado', 'pendiente');
+    }
+
+    /**
+     * Scope para buscar materias por usuario
+     */
+    public function scopeDelUsuario($query, $userId)
+    {
+        return $query->where('user_id', $userId);
     }
 }

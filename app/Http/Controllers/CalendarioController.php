@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tarea;
+use App\Models\Materia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,7 +11,9 @@ class CalendarioController extends Controller
 {
     public function index()
     {
-        return view('calendario.index');
+        // Obtener las materias del usuario para el formulario
+        $materias = Materia::where('user_id', Auth::id())->get();
+        return view('calendario.index', compact('materias'));
     }
 
     public function eventos(Request $request)
@@ -20,7 +23,14 @@ class CalendarioController extends Controller
 
         $tareas = Tarea::with('materia')
             ->where('user_id', Auth::id())
-            ->calendario($start, $end)
+            ->where(function($query) use ($start, $end) {
+                $query->whereBetween('fecha_entrega', [$start, $end])
+                      ->orWhereBetween('fecha_inicio', [$start, $end])
+                      ->orWhere(function($q) use ($start, $end) {
+                          $q->where('fecha_inicio', '<=', $start)
+                            ->where('fecha_entrega', '>=', $end);
+                      });
+            })
             ->get();
 
         $eventos = $tareas->map(function ($tarea) {
@@ -83,4 +93,26 @@ class CalendarioController extends Controller
             'evento' => $tarea->toCalendarEvent()
         ]);
     }
+
+    // Agregar este método al controlador existente
+public function showEvento(Tarea $tarea)
+{
+    // Verificar que el usuario es dueño de la tarea
+    if ($tarea->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    return response()->json([
+        'evento' => $tarea->toCalendarEvent(),
+        'tarea' => [
+            'descripcion' => $tarea->descripcion,
+            'prioridad' => $tarea->prioridad,
+            'estado' => $tarea->estado,
+            'materia' => $tarea->materia->nombre ?? 'Sin materia',
+            'ubicacion' => $tarea->ubicacion,
+            'edit_url' => route('tareas.edit', $tarea),
+            'view_url' => route('tareas.show', $tarea)
+        ]
+    ]);
+}
 }

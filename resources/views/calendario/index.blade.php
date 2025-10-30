@@ -54,7 +54,7 @@
                             <label for="materia_id">Materia</label>
                             <select class="form-control" id="materia_id" name="materia_id">
                                 <option value="">Seleccionar materia</option>
-                                @foreach(Auth::user()->materias as $materia)
+                                @foreach($materias as $materia)
                                     <option value="{{ $materia->id }}" data-color="{{ $materia->color }}">
                                         {{ $materia->nombre }}
                                     </option>
@@ -154,7 +154,8 @@
                 
                 // Cuando se hace click en un evento
                 eventClick: function(info) {
-                    window.location.href = info.event.extendedProps.url;
+                    // Redirigir a la vista de la tarea
+                    window.location.href = '/tareas/' + info.event.id;
                 },
                 
                 // Cuando se arrastra un evento
@@ -194,7 +195,13 @@
                         });
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error al crear la tarea'
+                    });
+                });
             });
 
             // Función para actualizar evento al arrastrar
@@ -218,6 +225,10 @@
                     if (!data.success) {
                         calendar.refetchEvents(); // Revertir cambios si hay error
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    calendar.refetchEvents(); // Revertir cambios si hay error
                 });
             }
 

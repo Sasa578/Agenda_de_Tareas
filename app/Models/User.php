@@ -45,4 +45,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relaciones
+     */
+    public function materias()
+    {
+        return $this->hasMany(Materia::class);
+    }
+
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class);
+    }
+
+    public function recordatorios()
+    {
+        return $this->hasMany(Recordatorio::class);
+    }
 }

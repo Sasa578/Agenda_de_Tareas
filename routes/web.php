@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\CalendarioController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -30,6 +31,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/eventos', [CalendarioController::class, 'crearEvento'])->name('calendario.crear');
         Route::put('/eventos/{tarea}', [CalendarioController::class, 'actualizarEvento'])->name('calendario.actualizar');
     });
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    });
+
+    Route::get('/eventos/{tarea}', [CalendarioController::class, 'showEvento'])->name('calendario.mostrar');
 });
 
 // Las rutas de autenticación deben estar al final
