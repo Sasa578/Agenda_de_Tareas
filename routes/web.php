@@ -11,22 +11,26 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Resource Routes
+    // Materias
     Route::resource('materias', MateriaController::class);
-    Route::resource('tareas', TareaController::class);
     
-    // Rutas adicionales para tareas
+    // Tareas
+    Route::resource('tareas', TareaController::class);
     Route::post('/tareas/{tarea}/completar', [TareaController::class, 'completar'])->name('tareas.completar');
     Route::post('/tareas/{tarea}/pendiente', [TareaController::class, 'marcarPendiente'])->name('tareas.pendiente');
-
-    // Dentro del grupo de auth
+    Route::post('/tareas/{tarea}/cambiar-estado', [TareaController::class, 'cambiarEstado'])->name('tareas.cambiar-estado');
+    
+    // Calendario
     Route::prefix('calendario')->group(function () {
-    Route::get('/', [CalendarioController::class, 'index'])->name('calendario.index');
-    Route::get('/eventos', [CalendarioController::class, 'eventos'])->name('calendario.eventos');
-    Route::post('/eventos', [CalendarioController::class, 'crearEvento'])->name('calendario.crear');
-    Route::put('/eventos/{tarea}', [CalendarioController::class, 'actualizarEvento'])->name('calendario.actualizar');
-});
+        Route::get('/', [CalendarioController::class, 'index'])->name('calendario.index');
+        Route::get('/eventos', [CalendarioController::class, 'eventos'])->name('calendario.eventos');
+        Route::post('/eventos', [CalendarioController::class, 'crearEvento'])->name('calendario.crear');
+        Route::put('/eventos/{tarea}', [CalendarioController::class, 'actualizarEvento'])->name('calendario.actualizar');
+    });
 });
 
+// Las rutas de autenticación deben estar al final
+require __DIR__.'/auth.php';
