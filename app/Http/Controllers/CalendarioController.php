@@ -18,23 +18,20 @@ class CalendarioController extends Controller
 
     public function eventos(Request $request)
     {
-        $start = $request->get('start');
-        $end = $request->get('end');
-
         $tareas = Tarea::with('materia')
             ->where('user_id', Auth::id())
-            ->where(function($query) use ($start, $end) {
-                $query->whereBetween('fecha_entrega', [$start, $end])
-                      ->orWhereBetween('fecha_inicio', [$start, $end])
-                      ->orWhere(function($q) use ($start, $end) {
-                          $q->where('fecha_inicio', '<=', $start)
-                            ->where('fecha_entrega', '>=', $end);
-                      });
-            })
             ->get();
 
         $eventos = $tareas->map(function ($tarea) {
-            return $tarea->toCalendarEvent();
+            return [
+                'id' => $tarea->id,
+                'titulo' => $tarea->titulo,
+                'descripcion' => $tarea->descripcion,
+                'start' => $tarea->fecha_entrega->toISOString(),
+                'prioridad' => $tarea->prioridad,
+                'materia' => $tarea->materia ? $tarea->materia->nombre : 'Sin materia',
+                'color' => $tarea->materia ? $tarea->materia->color : '#007bff'
+            ];
         });
 
         return response()->json($eventos);
@@ -95,24 +92,26 @@ class CalendarioController extends Controller
     }
 
     // Agregar este método al controlador existente
-public function showEvento(Tarea $tarea)
-{
-    // Verificar que el usuario es dueño de la tarea
-    if ($tarea->user_id !== Auth::id()) {
-        abort(403);
+    public function showEvento(Tarea $tarea)
+    {
+        // Verificar que el usuario es dueño de la tarea
+        if ($tarea->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return response()->json([
+            'evento' => $tarea->toCalendarEvent(),
+            'tarea' => [
+                'descripcion' => $tarea->descripcion,
+                'prioridad' => $tarea->prioridad,
+                'estado' => $tarea->estado,
+                'materia' => $tarea->materia->nombre ?? 'Sin materia',
+                'ubicacion' => $tarea->ubicacion,
+                'edit_url' => route('tareas.edit', $tarea),
+                'view_url' => route('tareas.show', $tarea)
+            ]
+        ]);
     }
 
-    return response()->json([
-        'evento' => $tarea->toCalendarEvent(),
-        'tarea' => [
-            'descripcion' => $tarea->descripcion,
-            'prioridad' => $tarea->prioridad,
-            'estado' => $tarea->estado,
-            'materia' => $tarea->materia->nombre ?? 'Sin materia',
-            'ubicacion' => $tarea->ubicacion,
-            'edit_url' => route('tareas.edit', $tarea),
-            'view_url' => route('tareas.show', $tarea)
-        ]
-    ]);
-}
+
 }
