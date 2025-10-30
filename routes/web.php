@@ -32,7 +32,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/eventos/{tarea}', [CalendarioController::class, 'actualizarEvento'])->name('calendario.actualizar');
     });
 
-    Route::prefix('profile')->group(function () {
+    //Profile
+    Route::prefix('user/profile')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::put('/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
