@@ -307,6 +307,11 @@ return [
         'icon' => 'fas fa-tachometer-alt'
     ],
     [
+        'text' => 'Calendario',
+        'url'  => '/calendario',
+        'icon' => 'fas fa-calendar'
+    ],
+    [
         'text' => 'Materias',
         'url'  => '/materias',
         'icon' => 'fas fa-book'
