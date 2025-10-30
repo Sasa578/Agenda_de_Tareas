@@ -41,28 +41,36 @@ class CalendarioController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
             'fecha_entrega' => 'required|date',
             'fecha_inicio' => 'nullable|date',
-            'todo_el_dia' => 'boolean',
-            'materia_id' => 'nullable|exists:materias,id',
             'prioridad' => 'required|in:baja,media,alta',
+            'materia_id' => 'required|exists:materias,id',
+            'ubicacion' => 'nullable|string|max:255',
+            'todo_el_dia' => 'boolean',
         ]);
+
+        // Verificar que la materia pertenece al usuario
+        $materia = Materia::where('id', $request->materia_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
         $tarea = Tarea::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha_entrega' => $request->fecha_entrega,
             'fecha_inicio' => $request->fecha_inicio,
-            'todo_el_dia' => $request->todo_el_dia ?? false,
-            'ubicacion' => $request->ubicacion,
             'prioridad' => $request->prioridad,
             'materia_id' => $request->materia_id,
+            'ubicacion' => $request->ubicacion,
+            'todo_el_dia' => $request->todo_el_dia ?? false,
             'user_id' => Auth::id(),
         ]);
 
         return response()->json([
             'success' => true,
-            'evento' => $tarea->toCalendarEvent()
+            'message' => 'Tarea creada exitosamente',
+            'evento' => $tarea->load('materia')->toCalendarEvent()
         ]);
     }
 

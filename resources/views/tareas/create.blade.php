@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="ubicacion">Ubicación</label>
+                            <label for="ubicacion">Lugar de Entrega</label>
                             <input type="text" name="ubicacion" id="ubicacion" class="form-control @error('ubicacion') is-invalid @enderror" 
                                    value="{{ old('ubicacion') }}">
                             @error('ubicacion')

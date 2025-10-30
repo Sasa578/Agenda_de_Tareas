@@ -7,146 +7,162 @@
 @stop
 
 @section('content')
-    <div class="mobile-header z-depth-1">
-        <div class="row">
-            <div class="col s2">
-                <a href="#" data-activates="sidebar" class="button-collapse">
-                    <i class="material-icons">menu</i>
-                </a>
-            </div>
-            <div class="col s10">
-                <h4>Calendario</h4>
-            </div>
-        </div>
-    </div>
+    <div class="calendar-container">
+        <div class="calendar-main">
+            <!-- Header del Calendario -->
+            <div class="calendar-header-section">
+                <div class="header-background">
+                    <div class="calendar-header">
+                        <a class="prev-button" id="prev">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </a>
+                        <a class="next-button" id="next">
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </a>
 
-    <div class="main-wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar-wrapper z-depth-2 side-nav fixed" id="sidebar">
-            <div class="sidebar-title">
-                <h4>Tareas</h4>
-                <h5 id="eventDayName">{{ date('d F Y') }}</h5>
-            </div>
-            <div class="sidebar-events" id="sidebarEvents">
-                <div class="empty-message">Selecciona una fecha para ver las tareas</div>
-            </div>
-        </div>
-
-        <!-- Contenido Principal -->
-        <div class="content-wrapper">
-            <div class="container">
-                <div class="calendar-wrapper z-depth-2">
-                    <!-- Header del Calendario -->
-                    <div class="header-background">
-                        <div class="calendar-header">
-                            <a class="prev-button" id="prev">
-                                <i class="material-icons">keyboard_arrow_left</i>
-                            </a>
-                            <a class="next-button" id="next">
-                                <i class="material-icons">keyboard_arrow_right</i>
-                            </a>
-
-                            <div class="row header-title">
-                                <div class="header-text">
-                                    <h3 id="month-name">Mes</h3>
-                                    <h5 id="todayDayName">Hoy es {{ date('l d M') }}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Calendario -->
-                    <div class="calendar-content">
-                        <div id="calendar-table" class="calendar-cells">
-                            <div id="table-header">
-                                <div class="row">
-                                    <div class="col">Lun</div>
-                                    <div class="col">Mar</div>
-                                    <div class="col">Mié</div>
-                                    <div class="col">Jue</div>
-                                    <div class="col">Vie</div>
-                                    <div class="col">Sáb</div>
-                                    <div class="col">Dom</div>
-                                </div>
-                            </div>
-                            <div id="table-body"></div>
-                        </div>
-                    </div>
-
-                    <!-- Formulario para Nueva Tarea -->
-                    <div class="calendar-footer">
-                        <div class="emptyForm" id="emptyForm">
-                            <h4 id="emptyFormTitle">Agregar nueva tarea</h4>
-                            <a class="addEvent waves-effect waves-light btn" id="changeFormButton">
-                                <i class="material-icons left">add</i>Nueva Tarea
-                            </a>
-                        </div>
-                        
-                        <div class="addForm" id="addForm">
-                            <h4>Nueva Tarea</h4>
-                            <form id="eventForm">
-                                @csrf
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input id="eventTitleInput" name="titulo" type="text" class="validate" required>
-                                        <label for="eventTitleInput">Título *</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <textarea id="eventDescInput" name="descripcion" class="materialize-textarea"></textarea>
-                                        <label for="eventDescInput">Descripción</label>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="input-field col s6">
-                                        <select id="eventMateria" name="materia_id">
-                                            <option value="" disabled selected>Seleccionar materia</option>
-                                            @foreach($materias as $materia)
-                                                <option value="{{ $materia->id }}" data-color="{{ $materia->color }}">
-                                                    {{ $materia->nombre }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <label>Materia</label>
-                                    </div>
-                                    
-                                    <div class="input-field col s6">
-                                        <select id="eventPriority" name="prioridad" required>
-                                            <option value="media" selected>Media</option>
-                                            <option value="alta">Alta</option>
-                                            <option value="baja">Baja</option>
-                                        </select>
-                                        <label>Prioridad *</label>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="input-field col s6">
-                                        <input type="datetime-local" id="eventStartDate" name="fecha_inicio" class="validate">
-                                        <label for="eventStartDate">Fecha Inicio</label>
-                                    </div>
-                                    <div class="input-field col s6">
-                                        <input type="datetime-local" id="eventEndDate" name="fecha_entrega" class="validate" required>
-                                        <label for="eventEndDate">Fecha Entrega *</label>
-                                    </div>
-                                </div>
-
-                                <div class="addEventButtons">
-                                    <button type="submit" class="waves-effect waves-light btn blue lighten-2">
-                                        <i class="material-icons left">save</i>Guardar
-                                    </button>
-                                    <a class="waves-effect waves-light btn grey lighten-2" id="cancelAdd">
-                                        <i class="material-icons left">cancel</i>Cancelar
-                                    </a>
-                                </div>
-                            </form>
+                        <div class="header-title">
+                            <h3 id="month-name">Mes</h3>
+                            <h5 id="todayDayName">Hoy es {{ date('l d M') }}</h5>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Calendario -->
+            <div class="calendar-section">
+                <div class="calendar-content">
+                    <div id="calendar-table" class="calendar-cells">
+                        <div id="table-header">
+                            <div class="row">
+                                <div class="col">Lun</div>
+                                <div class="col">Mar</div>
+                                <div class="col">Mié</div>
+                                <div class="col">Jue</div>
+                                <div class="col">Vie</div>
+                                <div class="col">Sáb</div>
+                                <div class="col">Dom</div>
+                            </div>
+                        </div>
+                        <div id="table-body"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para abrir formulario -->
+            <div class="calendar-actions">
+                <a class="add-event-btn waves-effect waves-light btn" id="openFormButton">
+                    <i class="material-icons left">add</i>Nueva Tarea
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar para Formulario -->
+        <div class="form-sidebar" id="formSidebar">
+            <div class="form-header">
+                <h4>Nueva Tarea</h4>
+                <a class="close-form" id="closeFormButton">
+                    <i class="material-icons">close</i>
+                </a>
+            </div>
+            
+            <div class="form-content">
+                @if ($errors->any())
+                    <div class="error-message">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form id="eventForm" method="POST" action="{{ route('calendario.crear') }}">
+                    @csrf
+                    
+                    <div class="inputBx">
+                        <input id="eventTitleInput" name="titulo" type="text" placeholder="Título de la tarea *" required>
+                    </div>
+                    
+                    <div class="inputBx">
+                        <textarea id="eventDescInput" name="descripcion" placeholder="Descripción (opcional)" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="inputBx">
+                            <select id="eventMateria" name="materia_id" required>
+                                <option value="" disabled selected>Seleccionar materia *</option>
+                                @foreach($materias as $materia)
+                                    <option value="{{ $materia->id }}" data-color="{{ $materia->color }}">
+                                        {{ $materia->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="inputBx">
+                            <select id="eventPriority" name="prioridad" required>
+                                <option value="" disabled selected>Prioridad *</option>
+                                <option value="media">Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="baja">Baja</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="inputBx">
+                            <input type="datetime-local" id="eventStartDate" name="fecha_inicio" placeholder="Fecha de inicio">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="inputBx">
+                            <input type="datetime-local" id="eventEndDate" name="fecha_entrega" placeholder="Fecha de entrega *" required>
+                        </div>
+                    </div>
+
+                    <div class="inputBx">
+                        <input type="text" id="eventLocation" name="ubicacion" placeholder="Lugar de Entrega">
+                    </div>
+
+                    <div class="checkboxBx">
+                        <label>
+                            <input type="checkbox" id="todoElDia" name="todo_el_dia" value="1" />
+                            <span>Evento de todo el día</span>
+                        </label>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">
+                            <i class="material-icons left">save</i>Guardar Tarea
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h4>¡Éxito!</h4>
+            <p id="successMessage">La tarea ha sido creada correctamente.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Aceptar</a>
+        </div>
+    </div>
+
+    <!-- Modal de error -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p id="errorMessage">Ha ocurrido un error al crear la tarea.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Aceptar</a>
         </div>
     </div>
 @stop
@@ -154,6 +170,7 @@
 @section('css')
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -162,149 +179,66 @@
             --tertiary-bg: #3e3e42;
             --text-primary: #ffffff;
             --text-secondary: #cccccc;
-            --accent-color: #0078d4;
-            --accent-hover: #106ebe;
+            --accent-color: #42a5f5;
+            --accent-hover: #478ed1;
             --border-color: #484848;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+        }
+
+        * {
+            font-family: "Quicksand", sans-serif;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--primary-bg);
-            color: var(--text-primary);
-            font-family: 'Roboto', sans-serif;
-            font-weight: 400;
-        }
-
-        .mobile-header {
-            display: none;
-            padding: 15px;
-            background: var(--tertiary-bg) !important;
-            position: fixed;
-            width: 100%;
-            z-index: 997;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .mobile-header h4 {
+            background: var(--primary-bg);
             color: var(--text-primary);
             margin: 0;
-            font-weight: 300;
-        }
-
-        .mobile-header .material-icons {
-            color: var(--text-primary);
-        }
-
-        .main-wrapper {
-            margin-top: 0;
-        }
-
-        .sidebar-wrapper {
-            background: var(--tertiary-bg) !important;
-            color: var(--text-primary);
-            width: 300px;
             padding: 0;
         }
 
-        .sidebar-title {
-            background: var(--accent-color);
-            padding: 30px 20px;
-            margin-bottom: 20px;
-        }
-
-        .sidebar-title h4, .sidebar-title h5 {
-            color: var(--text-primary);
-            margin: 0;
-            font-weight: 300;
-        }
-
-        .sidebar-events {
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-        }
-
-        .empty-message {
+        .calendar-container {
+            display: flex;
+            min-height: 80vh;
+            gap: 20px;
             padding: 20px;
-            color: var(--text-secondary);
-            text-align: center;
         }
 
-        .eventCard {
+        .calendar-main {
+            flex: 1;
             background: var(--secondary-bg);
-            border-left: 4px solid var(--accent-color);
-            margin: 10px;
-            padding: 15px;
-            border-radius: 4px;
-            animation: slideInDown 0.5s;
-        }
-
-        .eventCard.priority-high {
-            border-left-color: #e81123;
-        }
-
-        .eventCard.priority-medium {
-            border-left-color: #ffb900;
-        }
-
-        .eventCard.priority-low {
-            border-left-color: #107c10;
-        }
-
-        .eventCard-header {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-        }
-
-        .eventCard-description {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .eventCard-materia {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-
-        .content-wrapper {
-            margin-left: 300px;
-            background: var(--primary-bg);
-            min-height: 100vh;
-            padding: 20px 0;
-        }
-
-        .calendar-wrapper {
-            background: var(--secondary-bg);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            max-width: 900px;
-            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-sidebar {
+            width: 400px;
+            background: var(--tertiary-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+        }
+
+        .form-sidebar.active {
+            display: flex;
+        }
+
+        /* HEADER DEL CALENDARIO */
+        .calendar-header-section {
+            background: linear-gradient(135deg, var(--accent-color), #005a9e);
         }
 
         .header-background {
-            background: linear-gradient(135deg, var(--accent-color), #005a9e);
-            height: 180px;
+            padding: 30px;
         }
 
         .calendar-header {
-            padding: 30px;
-            color: var(--text-primary);
             position: relative;
-            height: 100%;
-        }
-
-        .header-text h3 {
             color: var(--text-primary);
-            margin: 0;
-            font-size: 2rem;
-            font-weight: 300;
-        }
-
-        .header-text h5 {
-            color: rgba(255,255,255,0.8);
-            margin: 5px 0 0 0;
-            font-weight: 300;
+            text-align: center;
         }
 
         .prev-button, .next-button {
@@ -313,70 +247,128 @@
             transform: translateY(-50%);
             color: rgba(255,255,255,0.8) !important;
             cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .prev-button:hover, .next-button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-50%) scale(1.1);
         }
 
         .prev-button {
-            left: 20px;
+            left: 0;
         }
 
         .next-button {
-            right: 20px;
+            right: 0;
         }
 
-        .prev-button i, .next-button i {
-            font-size: 3rem;
+        .header-title h3 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: white;
+        }
+
+        .header-title h5 {
+            margin: 10px 0 0 0;
+            font-weight: 300;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* CALENDARIO */
+        .calendar-section {
+            padding: 20px;
         }
 
         .calendar-content {
             background: var(--secondary-bg);
-            padding: 20px;
         }
 
         #table-header {
             color: var(--text-secondary);
             font-weight: 500;
             margin-bottom: 10px;
+            background: var(--tertiary-bg);
+            border-radius: 8px;
+            padding: 15px 0;
         }
 
-        #table-header .row, #table-body .row {
+        #table-header .row {
             margin-bottom: 0;
+            display: flex;
         }
 
-        #table-header .col, #table-body .col {
-            padding: 15px 5px;
+        #table-header .col {
+            flex: 1;
             text-align: center;
+            padding: 10px 5px;
+            font-weight: 600;
+        }
+
+        #table-body {
+            background: var(--secondary-bg);
+        }
+
+        #table-body .row {
+            margin-bottom: 5px;
+            display: flex;
         }
 
         #table-body .col {
+            flex: 1;
+            text-align: center;
+            padding: 20px 5px;
+            margin: 2px;
             background: var(--tertiary-bg);
             border: 2px solid transparent;
-            border-radius: 4px;
-            margin: 2px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
             color: var(--text-primary);
+            font-weight: 500;
         }
 
         #table-body .col:hover {
             border-color: var(--accent-color);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 165, 245, 0.2);
         }
 
         #table-body .col.empty-day {
             background: transparent;
             cursor: default;
+            color: var(--text-secondary);
         }
 
         #table-body .col.empty-day:hover {
             border-color: transparent;
             transform: none;
+            box-shadow: none;
         }
 
         #table-body .col.blue.lighten-3 {
             background: var(--accent-color) !important;
             color: white;
+            border-color: var(--accent-color);
+        }
+
+        .day-number {
+            font-size: 1.1em;
+            margin-bottom: 5px;
         }
 
         .day-mark {
@@ -384,130 +376,252 @@
             height: 6px;
             background-color: #ffb900;
             border-radius: 50%;
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 5px;
         }
 
-        .calendar-footer {
-            background: var(--tertiary-bg);
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
+        /* BOTÓN NUEVA TAREA */
+        .calendar-actions {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
         }
 
-        .emptyForm h4 {
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-
-        .addEvent {
-            background: var(--accent-color) !important;
+        .add-event-btn {
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-hover)) !important;
             border-radius: 25px;
             padding: 0 30px;
+            height: 45px;
+            line-height: 45px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+            transition: all 0.3s ease;
         }
 
-        .addForm {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--tertiary-bg);
-            padding: 30px;
-            transition: top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        .add-event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 165, 245, 0.6);
         }
 
-        .addForm h4 {
+        /* FORMULARIO LATERAL */
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--secondary-bg);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .form-header h4 {
+            margin: 0;
             color: var(--text-primary);
-            margin-bottom: 20px;
-            font-weight: 300;
+            font-weight: 500;
         }
 
-        .input-field label {
+        .close-form {
             color: var(--text-secondary);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
-        .input-field input, .input-field textarea {
+        .close-form:hover {
             color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.1);
         }
 
-        .input-field input:focus, .input-field textarea:focus {
-            border-bottom: 1px solid var(--accent-color);
-            box-shadow: 0 1px 0 0 var(--accent-color);
+        .form-content {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
         }
 
-        .input-field input:focus + label, .input-field textarea:focus + label {
-            color: var(--accent-color);
+        /* ESTILOS DEL FORMULARIO */
+        .inputBx {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
         }
 
-        .select-wrapper input.select-dropdown {
-            border-bottom: 1px solid var(--border-color);
+        .inputBx input,
+        .inputBx textarea,
+        .inputBx select {
+            position: relative;
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            font-size: 1em;
             color: var(--text-primary);
+            box-shadow: none;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-family: "Quicksand", sans-serif;
         }
 
-        .dropdown-content {
-            background: var(--secondary-bg);
+        .inputBx textarea {
+            border-radius: 15px;
+            min-height: 80px;
+            resize: vertical;
         }
 
-        .dropdown-content li {
-            background: var(--secondary-bg);
+        .inputBx select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 14px;
+            padding-right: 40px;
         }
 
-        .dropdown-content li span {
+        .inputBx input:focus,
+        .inputBx textarea:focus,
+        .inputBx select:focus {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(66, 165, 245, 0.3);
+        }
+
+        .inputBx input::placeholder,
+        .inputBx textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .inputBx {
+            flex: 1;
+        }
+
+        /* Checkbox */
+        .checkboxBx {
+            margin: 20px 0;
+        }
+
+        .checkboxBx label {
             color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9em;
         }
 
-        .dropdown-content li:hover, .dropdown-content li.active {
-            background: var(--accent-color);
+        .checkboxBx input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.1);
         }
 
-        .addEventButtons {
+        /* Botones */
+        .form-buttons {
             margin-top: 20px;
-            text-align: right;
         }
 
-        .addEventButtons .btn {
-            margin-left: 10px;
+        .submit-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-hover));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+        }
+
+        /* Mensajes de error */
+        .error-message {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #ffcdd2;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .error-message ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.9em;
+        }
+
+        .error-message li {
+            margin-bottom: 3px;
+        }
+
+        /* Loading */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         /* Responsive */
-        @media (max-width: 992px) {
-            .content-wrapper {
-                margin-left: 0;
+        @media (max-width: 1024px) {
+            .calendar-container {
+                flex-direction: column;
             }
-            .mobile-header {
-                display: block;
-            }
-            .calendar-wrapper {
-                margin-top: 80px;
+            
+            .form-sidebar {
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
             }
         }
 
-        @media (max-width: 600px) {
-            .calendar-content {
+        @media (max-width: 768px) {
+            .calendar-container {
                 padding: 10px;
             }
+            
+            .header-title h3 {
+                font-size: 2rem;
+            }
+            
             #table-body .col {
+                padding: 15px 2px;
                 min-height: 60px;
-                padding: 10px 2px;
+                font-size: 0.9em;
             }
-            .header-text h3 {
-                font-size: 1.5rem;
-            }
-        }
-
-        @keyframes slideInDown {
-            from {
-                transform: translate3d(0, -100%, 0);
-                opacity: 0;
-            }
-            to {
-                transform: translate3d(0, 0, 0);
-                opacity: 1;
+            
+            .form-content {
+                padding: 15px;
             }
         }
     </style>
@@ -521,7 +635,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializar componentes de Materialize
             M.AutoInit();
-            
+            var modals = M.Modal.init(document.querySelectorAll('.modal'));
+
             var calendar = {
                 currentDate: new Date(),
                 selectedDate: new Date(),
@@ -532,6 +647,32 @@
                     this.loadEvents();
                     this.createCalendar(this.currentDate);
                     this.bindEvents();
+                    this.initializeForm();
+                },
+
+                initializeForm: function() {
+                    // Inicializar selects
+                    var selects = document.querySelectorAll('select');
+                    M.FormSelect.init(selects);
+
+                    // Prellenar fecha de hoy por defecto
+                    const today = new Date();
+                    const formattedDate = today.toISOString().slice(0, 16);
+                    document.getElementById("eventEndDate").value = formattedDate;
+
+                    // Configurar evento de "todo el día"
+                    document.getElementById('todoElDia').addEventListener('change', function() {
+                        const startDateInput = document.getElementById('eventStartDate');
+                        const endDateInput = document.getElementById('eventEndDate');
+                        
+                        if (this.checked) {
+                            startDateInput.type = 'date';
+                            endDateInput.type = 'date';
+                        } else {
+                            startDateInput.type = 'datetime-local';
+                            endDateInput.type = 'datetime-local';
+                        }
+                    });
                 },
 
                 createCalendar: function(date, side) {
@@ -544,68 +685,63 @@
                     monthTitle.innerHTML = `${this.capitalizeFirst(monthName)} ${yearNum}`;
 
                     var gridTable = document.getElementById("table-body");
+                    gridTable.innerHTML = "";
+
+                    var newTr = document.createElement("div");
+                    newTr.className = "row";
+                    var currentTr = gridTable.appendChild(newTr);
+
+                    // Días vacíos al inicio (Lunes es el primer día)
+                    var firstDayOfWeek = startDate.getDay();
+                    var emptyDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
                     
-                    if (side) {
-                        gridTable.className = side === "left" ? "animated fadeOutRight" : "animated fadeOutLeft";
+                    for (let i = 0; i < emptyDays; i++) {
+                        let emptyDivCol = document.createElement("div");
+                        emptyDivCol.className = "col empty-day";
+                        currentTr.appendChild(emptyDivCol);
                     }
 
-                    setTimeout(() => {
-                        gridTable.innerHTML = "";
+                    var lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+                    lastDay = lastDay.getDate();
 
-                        var newTr = document.createElement("div");
-                        newTr.className = "row";
-                        var currentTr = gridTable.appendChild(newTr);
+                    for (let i = 1; i <= lastDay; i++) {
+                        if (currentTr.children.length >= 7) {
+                            currentTr = gridTable.appendChild(this.addNewRow());
+                        }
+                        
+                        let currentDay = document.createElement("div");
+                        currentDay.className = "col";
+                        
+                        let dayNumber = document.createElement("div");
+                        dayNumber.className = "day-number";
+                        dayNumber.textContent = i;
+                        currentDay.appendChild(dayNumber);
 
-                        // Días vacíos al inicio
-                        for (let i = 1; i < (startDate.getDay() || 7); i++) {
-                            let emptyDivCol = document.createElement("div");
-                            emptyDivCol.className = "col empty-day";
-                            currentTr.appendChild(emptyDivCol);
+                        let dateKey = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+                        
+                        // Marcar día seleccionado
+                        if (this.selectedDate.toDateString() === dateKey.toDateString()) {
+                            this.selectedDayBlock = currentDay;
+                            currentDay.classList.add("blue", "lighten-3");
                         }
 
-                        var lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-                        lastDay = lastDay.getDate();
-
-                        for (let i = 1; i <= lastDay; i++) {
-                            if (currentTr.children.length >= 7) {
-                                currentTr = gridTable.appendChild(this.addNewRow());
-                            }
-                            
-                            let currentDay = document.createElement("div");
-                            currentDay.className = "col";
-                            currentDay.innerHTML = i;
-
-                            let dateKey = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-                            
-                            // Marcar día seleccionado
-                            if (this.selectedDate.toDateString() === dateKey.toDateString()) {
-                                this.selectedDayBlock = currentDay;
-                                currentDay.classList.add("blue", "lighten-3");
-                            }
-
-                            // Mostrar marcas de eventos
-                            let dayEvents = this.getEventsForDate(dateKey);
-                            if (dayEvents.length > 0) {
-                                let eventMark = document.createElement("div");
-                                eventMark.className = "day-mark";
-                                currentDay.appendChild(eventMark);
-                            }
-
-                            currentTr.appendChild(currentDay);
+                        // Mostrar marcas de eventos
+                        let dayEvents = this.getEventsForDate(dateKey);
+                        if (dayEvents.length > 0) {
+                            let eventMark = document.createElement("div");
+                            eventMark.className = "day-mark";
+                            currentDay.appendChild(eventMark);
                         }
 
-                        // Días vacíos al final
-                        for (let i = currentTr.getElementsByTagName("div").length; i < 7; i++) {
-                            let emptyDivCol = document.createElement("div");
-                            emptyDivCol.className = "col empty-day";
-                            currentTr.appendChild(emptyDivCol);
-                        }
+                        currentTr.appendChild(currentDay);
+                    }
 
-                        if (side) {
-                            gridTable.className = side === "left" ? "animated fadeInLeft" : "animated fadeInRight";
-                        }
-
-                    }, side ? 270 : 0);
+                    // Días vacíos al final
+                    while (currentTr.children.length < 7) {
+                        let emptyDivCol = document.createElement("div");
+                        emptyDivCol.className = "col empty-day";
+                        currentTr.appendChild(emptyDivCol);
+                    }
                 },
 
                 addNewRow: function() {
@@ -624,7 +760,6 @@
                         .then(events => {
                             this.events = events;
                             this.createCalendar(this.currentDate);
-                            this.showEvents();
                         })
                         .catch(error => console.error('Error loading events:', error));
                 },
@@ -636,65 +771,27 @@
                     });
                 },
 
-                showEvents: function() {
-                    let sidebarEvents = document.getElementById("sidebarEvents");
-                    let dayEvents = this.getEventsForDate(this.selectedDate);
-
-                    sidebarEvents.innerHTML = "";
-
-                    if (dayEvents.length > 0) {
-                        dayEvents.forEach(event => {
-                            let eventContainer = document.createElement("div");
-                            eventContainer.className = `eventCard priority-${event.prioridad}`;
-
-                            let eventHeader = document.createElement("div");
-                            eventHeader.className = "eventCard-header";
-                            eventHeader.textContent = event.titulo;
-
-                            let eventDescription = document.createElement("div");
-                            eventDescription.className = "eventCard-description";
-                            eventDescription.textContent = event.descripcion || 'Sin descripción';
-
-                            let eventMateria = document.createElement("div");
-                            eventMateria.className = "eventCard-materia";
-                            eventMateria.textContent = `Materia: ${event.materia}`;
-
-                            eventContainer.appendChild(eventHeader);
-                            eventContainer.appendChild(eventDescription);
-                            eventContainer.appendChild(eventMateria);
-
-                            eventContainer.addEventListener('click', () => {
-                                window.location.href = `/tareas/${event.id}`;
-                            });
-
-                            sidebarEvents.appendChild(eventContainer);
-                        });
-
-                        document.getElementById("emptyFormTitle").textContent = `${dayEvents.length} tareas para esta fecha`;
-                    } else {
-                        let emptyMessage = document.createElement("div");
-                        emptyMessage.className = "empty-message";
-                        emptyMessage.textContent = "No hay tareas para esta fecha";
-                        sidebarEvents.appendChild(emptyMessage);
-                        document.getElementById("emptyFormTitle").textContent = "Agregar nueva tarea";
-                    }
-                },
-
                 bindEvents: function() {
                     // Navegación del calendario
                     document.getElementById("prev").addEventListener("click", () => {
                         this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
-                        this.createCalendar(this.currentDate, "left");
+                        this.createCalendar(this.currentDate);
                     });
 
                     document.getElementById("next").addEventListener("click", () => {
                         this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
-                        this.createCalendar(this.currentDate, "right");
+                        this.createCalendar(this.currentDate);
                     });
 
                     // Selección de día
                     document.getElementById("table-body").addEventListener("click", (e) => {
-                        if (!e.target.classList.contains("col") || e.target.classList.contains("empty-day")) {
+                        let target = e.target;
+                        // Si se hace clic en el número del día o en el marcador
+                        if (target.classList.contains("day-number") || target.classList.contains("day-mark")) {
+                            target = target.parentElement;
+                        }
+                        
+                        if (!target.classList.contains("col") || target.classList.contains("empty-day")) {
                             return;
                         }
 
@@ -702,37 +799,26 @@
                             this.selectedDayBlock.classList.remove("blue", "lighten-3");
                         }
 
-                        this.selectedDayBlock = e.target;
+                        this.selectedDayBlock = target;
                         this.selectedDayBlock.classList.add("blue", "lighten-3");
 
-                        let day = parseInt(e.target.textContent);
+                        let day = parseInt(target.querySelector('.day-number').textContent);
                         this.selectedDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
-
-                        // Actualizar fecha en el sidebar
-                        document.getElementById("eventDayName").textContent = 
-                            this.selectedDate.toLocaleDateString("es-ES", {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
 
                         // Prellenar fecha de entrega en el formulario
                         const formattedDate = this.selectedDate.toISOString().slice(0, 16);
                         document.getElementById("eventEndDate").value = formattedDate;
-
-                        this.showEvents();
                     });
 
-                    // Formulario
-                    document.getElementById("changeFormButton").addEventListener("click", () => {
-                        document.getElementById("addForm").style.top = "0";
+                    // Abrir/cerrar formulario
+                    document.getElementById("openFormButton").addEventListener("click", () => {
+                        document.getElementById("formSidebar").classList.add("active");
                     });
 
-                    document.getElementById("cancelAdd").addEventListener("click", (e) => {
-                        e.preventDefault();
-                        document.getElementById("addForm").style.top = "100%";
+                    document.getElementById("closeFormButton").addEventListener("click", () => {
+                        document.getElementById("formSidebar").classList.remove("active");
                         document.getElementById("eventForm").reset();
+                        this.initializeForm();
                     });
 
                     // Envío del formulario
@@ -740,21 +826,14 @@
                         e.preventDefault();
                         this.saveEvent();
                     });
-
-                    // Sidebar móvil
-                    document.querySelector('.button-collapse')?.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        var sidebar = document.getElementById('sidebar');
-                        if (sidebar.style.left === '0px') {
-                            sidebar.style.left = '-300px';
-                        } else {
-                            sidebar.style.left = '0px';
-                        }
-                    });
                 },
 
                 saveEvent: function() {
-                    const formData = new FormData(document.getElementById("eventForm"));
+                    const form = document.getElementById("eventForm");
+                    const formData = new FormData(form);
+                    
+                    // Mostrar loading
+                    form.classList.add('loading');
                     
                     fetch('{{ route("calendario.crear") }}', {
                         method: 'POST',
@@ -765,23 +844,26 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        form.classList.remove('loading');
+                        
                         if (data.success) {
-                            document.getElementById("addForm").style.top = "100%";
-                            document.getElementById("eventForm").reset();
+                            // Cerrar formulario y resetear
+                            document.getElementById("formSidebar").classList.remove("active");
+                            form.reset();
+                            
+                            // Recargar eventos y calendario
                             this.loadEvents();
-                            this.showToast('Tarea creada exitosamente', 'success');
+                            
+                            // Mostrar mensaje de éxito
+                            M.toast({html: 'Tarea creada exitosamente', classes: 'green'});
+                        } else {
+                            throw new Error(data.message || 'Error al crear la tarea');
                         }
                     })
                     .catch(error => {
+                        form.classList.remove('loading');
                         console.error('Error saving event:', error);
-                        this.showToast('Error al crear la tarea', 'error');
-                    });
-                },
-
-                showToast: function(message, type) {
-                    M.toast({
-                        html: message,
-                        classes: type === 'success' ? 'green' : 'red'
+                        M.toast({html: error.message || 'Error al crear la tarea', classes: 'red'});
                     });
                 }
             };
